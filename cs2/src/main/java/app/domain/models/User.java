@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 
-public abstract class Person {
+public abstract class User {
 
     private int Id_User;
     private String Id_Related;
