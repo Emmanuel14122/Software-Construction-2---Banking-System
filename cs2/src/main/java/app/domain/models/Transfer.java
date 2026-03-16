@@ -1,22 +1,26 @@
 package app.domain.models;
 
 import java.util.Date;
+
+import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 
 
 public class Transfer {
-    private int Transfer_ID;
-    private String Origin_Account;
-    private String Destination_Account;
-    private double Amount;
-    private Date Creation_Date;
-    private Date Approval_Date;
-    private String Transfer_Status;
-    private int Creator_User_ID;
-    private int Approver_User_ID;
+    private int transfer_id;
+    private String origin_account;
+    private String destination_account;
+    private double amount;
+    private Date creation_date;
+    private Date approval_date;
+    private String transfer_status;
+    private int creator_user_id;
+    private int approver_user_id;
 }
