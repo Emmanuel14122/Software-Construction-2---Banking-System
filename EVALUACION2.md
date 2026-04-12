@@ -1,9 +1,9 @@
-# EVALUACION 2 - Software-Construction-2---Banking-System
+﻿# EVALUACION 2 - Software-Construction-2---Banking-System
 
 ## Informacion general
 - Estudiante(s): Alejandro Espinosa Arboleda, Brayan Alejandro Gonzalez Perez, Emmanuel Calderon Payares
 - Rama evaluada: main
-- Commit evaluado: 0d7636e6777350411d7a38fedd4302cf3af743e5
+- Commit evaluado: 435cdc26 (origin/main, commit mas reciente del estudiante tras revisar todas las ramas)
 - Fecha: 2026-04-11
 
 ---
@@ -23,7 +23,7 @@
 | **SUBTOTAL** | 100% | | **1.20** |
 
 ### Calculo
-Nota base = Σ((puntaje_i / 5) * peso_i) / 20 = 24 / 20 = **1.20**
+Nota base = Î£((puntaje_i / 5) * peso_i) / 20 = 24 / 20 = **1.20**
 
 ### Penalizaciones aplicadas
 | Penalizacion | Motivo | Reduccion |
@@ -32,12 +32,12 @@ Nota base = Σ((puntaje_i / 5) * peso_i) / 20 = 24 / 20 = **1.20**
 | Acoplamiento a framework | Anotaciones @Entity (JPA/Jakarta Persistence) directamente en clases de dominio | -25% |
 | Nomenclatura deficiente | Campos en snake_case (loan_id, transfer_id, origin_account), archivo loan.java en minuscula | -5% |
 
-Nota tras penalizaciones: 1.20 × 0.90 × 0.75 × 0.95 = **0.77**
+Nota tras penalizaciones: 1.20 Ã— 0.90 Ã— 0.75 Ã— 0.95 = **0.77**
 
 ---
 
 ## Nota final
-**0.8 / 5.0**
+**0.6 / 5.0**
 
 ---
 
@@ -68,3 +68,5 @@ Nota tras penalizaciones: 1.20 × 0.90 × 0.75 × 0.95 = **0.77**
 4. Crear servicios de dominio con reglas de negocio: validar saldo suficiente, cuenta no bloqueada, estados de prestamo, aprobacion de transferencias.
 5. Agregar entidad BitacoraOperacion con campo Map<String,Object> para datos variables y constructor inmutable.
 6. Renombrar campos a camelCase (accountStatus, loanId, originAccount) segun convencion Java.
+
+
