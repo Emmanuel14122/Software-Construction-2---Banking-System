@@ -18,4 +18,5 @@ public record LoanResponse(
     LocalDate disbursementDate,
     String destinationAccountDisbursement,
     Long approverAnalystId
+
 ) {}
