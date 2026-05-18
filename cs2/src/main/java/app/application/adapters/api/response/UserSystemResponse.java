@@ -3,16 +3,16 @@ package app.application.adapters.api.response;
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
  
 public record UserSystemResponse(
-    Long idUser,
-    String idRelated,
+    Long userId,
+    ClientResponse relatedClient,
     String fullName,
-    String idIdentification,
+    String identification,
     String email,
     String phone,
-    LocalDateTime birthDate,
+    LocalDate birthDate,
     String address,
     UserRole systemRole,
     UserStatus userStatus,

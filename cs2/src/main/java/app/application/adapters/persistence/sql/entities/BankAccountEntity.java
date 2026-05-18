@@ -24,7 +24,7 @@ public class BankAccountEntity {
     @Column(nullable = false, unique = true)
     private String accountNumber;
     private AccountType accountType;
-    private String idTitular;
+    private String accountHolderId;
     private BigDecimal currentBalance;
     private Currency currency;
     private AccountStatus accountStatus;

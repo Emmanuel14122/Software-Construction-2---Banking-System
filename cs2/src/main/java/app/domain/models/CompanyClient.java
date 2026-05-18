@@ -12,6 +12,6 @@ public class CompanyClient extends Client {
 
     private String nit;
     private String companyName;
-    private String legalRepresentativeId;
+    private NaturalPersonClient legalRepresentative;
 
 }

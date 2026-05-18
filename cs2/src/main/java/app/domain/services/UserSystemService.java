@@ -7,91 +7,91 @@ import app.domain.exception.NotFoundException;
 import app.domain.models.UserSystem;
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
-import app.domain.ports.UserPort;
+import app.domain.ports.UserSystemPort;
 
 
-public class UserService {
+public class UserSystemService {
 
-    private final UserPort userPort;
+    private final UserSystemPort userSystemPort;
 
-    public UserService(UserPort userPort) {
-        this.userPort = userPort;
+    public UserSystemService(UserSystemPort userSystemPort) {
+        this.userSystemPort = userSystemPort;
     }
 
     //Registra un nuevo usuario en el sistema.
     public void registerUser(UserSystem user) {
-        if (userPort.existsByDocument(user.getIdIdentification())) {
+        if (userSystemPort.existsByDocument(user.getIdentification())) {
             throw new BussinesException(
-                "A user with identification " + user.getIdIdentification() + " already exists.");
+                "A user with identification " + user.getIdentification() + " already exists.");
         }
-        if (userPort.existsByUsername(user.getUsername())) {
+        if (userSystemPort.existsByUsername(user.getUsername())) {
             throw new BussinesException(
                 "Username '" + user.getUsername() + "' is already taken.");
         }
-        if (userPort.existsByEmail(user.getEmail())) {
+        if (userSystemPort.existsByEmail(user.getEmail())) {
             throw new BussinesException(
                 "Email " + user.getEmail() + " is already registered.");
         }
 
         user.setUserStatus(UserStatus.Active);
-        userPort.save(user);
+        userSystemPort.save(user);
     }
 
     //Actualiza los datos de un usuario existente.
     public void updateUser(UserSystem user) {
-        userPort.findById(user.getIdUser())
+        userSystemPort.findById(user.getUserId())
             .orElseThrow(() -> new NotFoundException(
-                "User with ID " + user.getIdUser() + " not found."));
+                "User with ID " + user.getUserId() + " not found."));
 
-        userPort.update(user);
+        userSystemPort.update(user);
     }
 
     //Cambia el estado de un usuario (Active, Inactive, Locked).
     public void changeUserStatus(Long userId, UserStatus newStatus) {
-        UserSystem user = userPort.findById(userId)
+        UserSystem user = userSystemPort.findById(userId)
             .orElseThrow(() -> new NotFoundException(
                 "User with ID " + userId + " not found."));
 
         user.setUserStatus(newStatus);
-        userPort.update(user);
+        userSystemPort.update(user);
     }
 
     // Consultas
 
     //Obtiene un usuario por su identificador numérico.
     public UserSystem getUserById(Long userId) {
-        return userPort.findById(userId)
+        return userSystemPort.findById(userId)
             .orElseThrow(() -> new NotFoundException(
                 "User with ID " + userId + " not found."));
     }
 
     //Obtiene un usuario por su número de identificación.
     public UserSystem getUserByDocument(String identification) {
-        return userPort.findByDocument(identification)
+        return userSystemPort.findByDocument(identification)
             .orElseThrow(() -> new NotFoundException(
                 "User with identification " + identification + " not found."));
     }
 
     //Obtiene un usuario por su username. Usado en el proceso de autenticación.
     public UserSystem getUserByUsername(String username) {
-        return userPort.findByUsername(username)
+        return userSystemPort.findByUsername(username)
             .orElseThrow(() -> new NotFoundException(
                 "User with username '" + username + "' not found."));
     }
 
     //Retorna todos los usuarios del sistema.
     public List<UserSystem> getAllUsers() {
-        return userPort.findAll();
+        return userSystemPort.findAll();
     }
 
     //Retorna todos los usuarios con un rol específico.
     public List<UserSystem> getUsersByRole(UserRole role) {
-        return userPort.findByRole(role);
+        return userSystemPort.findByRole(role);
     }
 
     //Retorna todos los usuarios activos con un rol específico.
     public List<UserSystem> getActiveUsersByRole(UserRole role) {
-        return userPort.findByRoleAndStatus(role, UserStatus.Active);
+        return userSystemPort.findByRoleAndStatus(role, UserStatus.Active);
     }
 
 
@@ -99,7 +99,7 @@ public class UserService {
 
     //Valida que un usuario exista y esté activo.
     public void validateUserIsActive(Long userId) {
-        UserSystem user = userPort.findById(userId)
+        UserSystem user = userSystemPort.findById(userId)
             .orElseThrow(() -> new NotFoundException(
                 "User with ID " + userId + " not found."));
 
@@ -122,10 +122,10 @@ public class UserService {
 
     //Desactiva un usuario por su número de identificación.
     public void deactivateUser(String identification) {
-        userPort.findByDocument(identification)
+        userSystemPort.findByDocument(identification)
             .orElseThrow(() -> new NotFoundException(
                 "User with identification " + identification + " not found."));
 
-        userPort.deleteByDocument(identification);
+        userSystemPort.deleteByDocument(identification);
     }
 }

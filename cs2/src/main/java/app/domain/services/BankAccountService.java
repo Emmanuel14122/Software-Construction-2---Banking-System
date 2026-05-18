@@ -33,7 +33,7 @@ public class BankAccountService {
     }
 
     //Abre una nueva cuenta bancaria para un cliente.
-    public BankAccount openAccount(String idTitular,
+    public BankAccount openAccount(String accountHolderId,
                                    String accountNumber,
                                    AccountType accountType,
                                    Currency currency,
@@ -42,7 +42,7 @@ public class BankAccountService {
                                    String operatorRole) {
 
         // 1. Validar que el cliente esté activo
-        clientService.validateClientIsActive(idTitular);
+        clientService.validateClientIsActive(accountHolderId);
 
         // 2. Validar unicidad del número de cuenta
         if (bankAccountPort.existsByAccountNumber(accountNumber)) {
@@ -59,7 +59,7 @@ public class BankAccountService {
         BankAccount account = new BankAccount();
         account.setAccountNumber(accountNumber);
         account.setAccountType(accountType);
-        account.setIdTitular(idTitular);
+        account.setAccountHolderId(accountHolderId);
         account.setCurrentBalance(initialBalance);
         account.setCurrency(currency);
         account.setAccountStatus(AccountStatus.Active);
@@ -82,8 +82,8 @@ public class BankAccountService {
                 "Bank account " + accountNumber + " not found."));
     }
 
-    public List<BankAccount> getAccountsByTitular(String idTitular) {
-        return bankAccountPort.findByTitular(idTitular);
+    public List<BankAccount> getAccountsByTitular(String accountHolderId) {
+        return bankAccountPort.findByTitular(accountHolderId);
     }
 
     public List<BankAccount> getAllAccounts() {
@@ -108,12 +108,12 @@ public class BankAccountService {
     }
 
     //Valida que una cuenta activa pertenezca a un titular específico.
-    public BankAccount validateAccountBelongsToClient(String accountNumber, String idTitular) {
+    public BankAccount validateAccountBelongsToClient(String accountNumber, String accountHolderId) {
         BankAccount account = validateAccountIsOperational(accountNumber);
 
-        if (!account.getIdTitular().equals(idTitular)) {
+        if (!account.getAccountHolderId().equals(accountHolderId)) {
             throw new BussinesException(
-                "Account " + accountNumber + " does not belong to client " + idTitular + ".");
+                "Account " + accountNumber + " does not belong to client " + accountHolderId + ".");
         }
         return account;
     }
@@ -130,7 +130,7 @@ public class BankAccountService {
             .detailData(Map.of(
                 "accountNumber", account.getAccountNumber(),
                 "accountType", account.getAccountType().name(),
-                "idTitular", account.getIdTitular(),
+                "accountHolderId", account.getAccountHolderId(),
                 "initialBalance", account.getCurrentBalance(),
                 "currency", account.getCurrency().name(),
                 "openingDate", account.getOpeningDate().toString()

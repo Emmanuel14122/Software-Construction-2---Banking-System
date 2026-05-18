@@ -11,9 +11,9 @@ public interface BankAccountPort {
 
     Optional<BankAccount> findByAccountNumber(String accountNumber);
 
-    List<BankAccount> findByTitular(String idTitular);
+    List<BankAccount> findByTitular(String accountHolderId);
 
-    List<BankAccount> findByTitularAndStatus(String idTitular, AccountStatus status);
+    List<BankAccount> findByTitularAndStatus(String accountHolderId, AccountStatus status);
 
     List<BankAccount> findAll();
 

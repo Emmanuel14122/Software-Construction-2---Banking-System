@@ -1,30 +1,26 @@
 package app.domain.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 
-public abstract class UserSystem {
+public class UserSystem {
 
-    @Id
-    private Long idUser;
-    private String idRelated;
+    private Long userId;
+    private Client relatedClient;
     private String fullName;
-    private String idIdentification;
+    private String identification;
     private String email;
     private String phone;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String address;
     private UserRole systemRole;
     private UserStatus userStatus;

@@ -1,6 +1,6 @@
 package app.application.adapters.persistence.sql.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
@@ -18,13 +18,13 @@ import lombok.Setter;
 public class UserSystemEntity {
 
     @Id
-    private Long idUser;
-    private String idRelated;
+    private Long userId;
+    private ClientEntity relatedClient;
     private String fullName;
-    private String idIdentification;
+    private String identification;
     private String email;
     private String phone;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String address;
     private UserRole systemRole;
     private UserStatus userStatus;

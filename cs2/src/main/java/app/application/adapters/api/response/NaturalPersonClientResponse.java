@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public record NaturalPersonClientResponse(
         String fullName,
-        String idIdentification,
+        String identification,
         LocalDate birthDate,
         String address,
         String phoneNumber,

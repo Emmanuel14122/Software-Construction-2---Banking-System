@@ -1,23 +1,25 @@
 package app.application.adapters.api.request;
  
+import java.time.LocalDate;
+
 import app.domain.models.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+
 import app.domain.models.enums.UserStatus;
  
 @Getter
 @Setter
 public class UserSystemRequest {
  
-    private Long idUser;
-    private String idRelated;
+    private Long userId;
+    private ClientRequest relatedClient;
     private String fullName;
-    private String idIdentification;
+    private String identification;
     private String email;
     private String phone;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String address;
     private UserRole systemRole;
     private UserStatus userStatus;

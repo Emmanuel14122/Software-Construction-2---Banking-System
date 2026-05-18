@@ -1,7 +1,8 @@
 package app.application.adapters.persistence.sql.entities;
 
+import app.domain.models.NaturalPersonClient;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,11 @@ import lombok.Setter;
 @Table(name = "company_clients")
 @Getter
 @Setter
-public class CompanyClientEntity {
+public class CompanyClientEntity extends ClientEntity {
 
-    @Id
+    @Column(unique = true, nullable = false)
     private String nit;
     private String companyName;
-    private String legalRepresentativeId;
+    private NaturalPersonClient legalRepresentative;
 
 }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public record BankAccountResponse(
     String accountNumber,
     AccountType accountType,
-    String idTitular,
+    String accountHolderId,
     BigDecimal currentBalance,
     Currency currency,
     AccountStatus accountStatus,

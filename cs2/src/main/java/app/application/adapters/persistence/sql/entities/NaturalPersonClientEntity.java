@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +13,10 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class NaturalPersonClientEntity {
+public class NaturalPersonClientEntity extends ClientEntity {
     
-    @Id
-    @Column(nullable = false, unique = true)
-    private String idIdentification;
+    @Column(unique = true, nullable = false)
+    private String identification;
     private String fullName;
     private LocalDate birthDate;
     

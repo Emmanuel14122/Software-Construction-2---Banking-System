@@ -13,7 +13,7 @@ import lombok.Setter;
 
 public class NaturalPersonClient extends Client{
 
-    private String idIdentification;
+    private String identification;
     private String fullName;
     private LocalDate birthDate;
 }

@@ -16,7 +16,7 @@ public class NaturalPersonClientRequest extends ClientRequest {
  
     @NotBlank(message = "Full name is required")
     private String fullName;
-    private String idIdentification;
+    private String identification;
     @NotBlank(message = "Birth date is required")
     @DateTimeFormat(pattern = "dd-mm-yyyy")
     private LocalDate birthDate;

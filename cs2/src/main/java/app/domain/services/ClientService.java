@@ -24,9 +24,9 @@ public class ClientService {
      * Registra una nueva persona natural en el sistema.
      */
     public void registerNaturalPerson(NaturalPersonClient client) {
-        if (clientPort.existsNaturalPersonByDocument(client.getIdIdentification())) {
+        if (clientPort.existsNaturalPersonByDocument(client.getIdentification())) {
             throw new BussinesException(
-                "A natural person with identification " + client.getIdIdentification() + " already exists.");
+                "A natural person with identification " + client.getIdentification() + " already exists.");
         }
         if (clientPort.existsByEmail(client.getEmail())) {
             throw new BussinesException(
@@ -42,9 +42,9 @@ public class ClientService {
      * Actualiza los datos de una persona natural existente.
      */
     public void updateNaturalPerson(NaturalPersonClient client) {
-        clientPort.findNaturalPersonByDocument(client.getIdIdentification())
+        clientPort.findNaturalPersonByDocument(client.getIdentification())
             .orElseThrow(() -> new NotFoundException(
-                "Natural person with identification " + client.getIdIdentification() + " not found."));
+                "Natural person with identification " + client.getIdentification() + " not found."));
 
         clientPort.updateNaturalPerson(client);
     }
@@ -80,15 +80,14 @@ public class ClientService {
         }
 
         // Validar que el representante legal exista como persona natural
-        NaturalPersonClient legalRep = clientPort
-            .findNaturalPersonByDocument(company.getLegalRepresentativeId())
-            .orElseThrow(() -> new NotFoundException(
-                "Legal representative with identification " + company.getLegalRepresentativeId()
-                    + " not found as a natural person client."));
+        NaturalPersonClient legalRepresentative = company.getLegalRepresentative();
 
-        if (legalRep.getClientStatus() != ClientStatus.Active) {
-            throw new BussinesException(
-                "The legal representative must be an active client.");
+        if (legalRepresentative == null) {
+            throw new NotFoundException("Legal representative is required.");
+        }
+
+        if (legalRepresentative.getClientStatus() != ClientStatus.Active) {
+        throw new BussinesException("The legal representative must be an active client.");
         }
 
         company.setClientStatus(ClientStatus.Active);

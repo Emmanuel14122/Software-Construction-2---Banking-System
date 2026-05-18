@@ -7,9 +7,9 @@ import app.domain.models.UserSystem;
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
 
-public interface UserPort {
+public interface UserSystemPort {
 
-    Optional<UserSystem> findById(Long idUser);
+    Optional<UserSystem> findById(Long userId);
 
     Optional<UserSystem> findByDocument(String identification);
 

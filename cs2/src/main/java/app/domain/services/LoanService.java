@@ -70,7 +70,7 @@ public class LoanService {
         loanPort.save(loan);
 
         // 4. Registrar en Bitácora
-        registrarCambioEstadoPrestamo(loan, "LOAN_REQUESTED", null, LoanStatus.UnderReview,
+        recordLoanStatusChange(loan, "LOAN_REQUESTED", null, LoanStatus.UnderReview,
             creatorUserId, creatorRole, null, null);
 
         return loan;
@@ -111,7 +111,7 @@ public class LoanService {
         loanPort.update(loan);
 
         // Registrar en Bitácora
-        registrarCambioEstadoPrestamo(loan, "LOAN_APPROVED", previousStatus, LoanStatus.Approved,
+        recordLoanStatusChange(loan, "LOAN_APPROVED", previousStatus, LoanStatus.Approved,
             analystId, analystRole, approvedAmount, interestRate);
 
         return loan;
@@ -137,7 +137,7 @@ public class LoanService {
 
         loanPort.update(loan);
 
-        registrarCambioEstadoPrestamo(loan, "LOAN_REJECTED", previousStatus, LoanStatus.Rejected,
+        recordLoanStatusChange(loan, "LOAN_REJECTED", previousStatus, LoanStatus.Rejected,
             analystId, analystRole, null, null);
 
         return loan;
@@ -177,7 +177,7 @@ public class LoanService {
             .orElseThrow(() -> new NotFoundException(
                 "Destination account " + loan.getDestinationAccountDisbursement() + " not found."));
 
-        if (!destinationAccount.getIdTitular().equals(loan.getClientRequestorId())) {
+        if (!destinationAccount.getAccountHolderId().equals(loan.getClientRequestorId())) {
             throw new BussinesException(
                 "Destination account " + loan.getDestinationAccountDisbursement()
                     + " does not belong to the loan applicant " + loan.getClientRequestorId() + ".");
@@ -266,7 +266,7 @@ public class LoanService {
 
     // Métodos privados
 
-    private void registrarCambioEstadoPrestamo(Loan loan,
+    private void recordLoanStatusChange(Loan loan,
                                                 String operationType,
                                                 LoanStatus previousStatus,
                                                 LoanStatus newStatus,
