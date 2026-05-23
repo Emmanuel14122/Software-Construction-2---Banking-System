@@ -1,12 +1,12 @@
 package app.application.adapters.persistence.sql.entities;
 
-import app.domain.models.enums.ClientStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,17 +14,23 @@ import lombok.Setter;
 @Entity
 @Table(name = "clients")
 @Inheritance(strategy = InheritanceType.JOINED)
-@MappedSuperclass
 @Getter
 @Setter
 
 public abstract class ClientEntity {
 
-    private String address;
-    private String phoneNumber;
-    private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ClientStatus clientStatus;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "client_status")
+    private String clientStatus;
+
     
 }

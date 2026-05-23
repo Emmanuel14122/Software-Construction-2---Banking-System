@@ -15,7 +15,7 @@ import lombok.Setter;
 public class UserSystem {
 
     private Long userId;
-    private Client relatedClient;
+    private Client relatedClientId;
     private String fullName;
     private String identification;
     private String email;

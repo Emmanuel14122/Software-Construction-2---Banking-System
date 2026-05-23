@@ -7,7 +7,7 @@ import java.time.LocalDate;
  
 public record UserSystemResponse(
     Long userId,
-    ClientResponse relatedClient,
+    ClientResponse relatedClientId,
     String fullName,
     String identification,
     String email,

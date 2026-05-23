@@ -3,7 +3,7 @@ package app.domain.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.OperationsLog;
 import app.domain.ports.OperationsLogPort;
 

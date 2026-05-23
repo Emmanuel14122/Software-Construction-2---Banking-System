@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
  
 @Service
-public class TransferUseCase implements app.domain.ports.in.TransferUseCase {
+public class TransferUseCase implements app.domain.ports.TransferPort {
  
     @Autowired
     private SaveTransfer saveTransfer;

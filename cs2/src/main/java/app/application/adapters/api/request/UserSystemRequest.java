@@ -14,7 +14,7 @@ import app.domain.models.enums.UserStatus;
 public class UserSystemRequest {
  
     private Long userId;
-    private ClientRequest relatedClient;
+    private ClientRequest relatedClientId;
     private String fullName;
     private String identification;
     private String email;

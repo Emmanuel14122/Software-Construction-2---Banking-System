@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import app.domain.exception.BussinesException;
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.BusinessException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.BankAccount;
 import app.domain.models.OperationsLog;
 import app.domain.models.enums.AccountStatus;
@@ -46,13 +46,13 @@ public class BankAccountService {
 
         // 2. Validar unicidad del número de cuenta
         if (bankAccountPort.existsByAccountNumber(accountNumber)) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Account number " + accountNumber + " already exists in the system.");
         }
 
         // 3. Validar saldo inicial
         if (initialBalance == null || initialBalance.compareTo(BigDecimal.ZERO) < 0) {
-            throw new BussinesException("Initial balance cannot be negative.");
+            throw new BusinessException("Initial balance cannot be negative.");
         }
 
         // 4. Construir y guardar la cuenta
@@ -100,7 +100,7 @@ public class BankAccountService {
 
         if (account.getAccountStatus() == AccountStatus.Blocked
                 || account.getAccountStatus() == AccountStatus.Cancelled) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Account " + accountNumber + " is " + account.getAccountStatus()
                     + ". Operations are not allowed on blocked or cancelled accounts.");
         }
@@ -112,7 +112,7 @@ public class BankAccountService {
         BankAccount account = validateAccountIsOperational(accountNumber);
 
         if (!account.getAccountHolderId().equals(accountHolderId)) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Account " + accountNumber + " does not belong to client " + accountHolderId + ".");
         }
         return account;

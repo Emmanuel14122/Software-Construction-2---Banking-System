@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import app.domain.exception.BussinesException;
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.BusinessException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.BankAccount;
 import app.domain.models.OperationsLog;
 import app.domain.models.Transfer;
@@ -109,7 +109,7 @@ public class TransferService {
 
         // Validar estado
         if (transfer.getTransferStatus() != TransferStatus.WaitingApproval) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Transfer " + transferId + " cannot be approved. Current status: "
                     + transfer.getTransferStatus() + ".");
         }
@@ -117,7 +117,7 @@ public class TransferService {
         // Verificar que no haya vencido
         if (transfer.getExpirationCheckAt() != null
                 && LocalDateTime.now().isAfter(transfer.getExpirationCheckAt())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Transfer " + transferId + " has expired and can no longer be approved.");
         }
 
@@ -144,7 +144,7 @@ public class TransferService {
         Transfer transfer = getTransferById(transferId);
 
         if (transfer.getTransferStatus() != TransferStatus.WaitingApproval) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Transfer " + transferId + " cannot be rejected. Current status: "
                     + transfer.getTransferStatus() + ".");
         }
@@ -231,16 +231,16 @@ public class TransferService {
     // Métodos privados de lógica y validación
     private void validateTransferBasicRules(BigDecimal amount, String originAccount, String destinationAccount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BussinesException("Transfer amount must be strictly greater than zero.");
+            throw new BusinessException("Transfer amount must be strictly greater than zero.");
         }
         if (originAccount == null || originAccount.isBlank()) {
-            throw new BussinesException("Origin account is required.");
+            throw new BusinessException("Origin account is required.");
         }
         if (destinationAccount == null || destinationAccount.isBlank()) {
-            throw new BussinesException("Destination account is required.");
+            throw new BusinessException("Destination account is required.");
         }
         if (originAccount.equals(destinationAccount)) {
-            throw new BussinesException("Origin and destination accounts must be different.");
+            throw new BusinessException("Origin and destination accounts must be different.");
         }
     }
 
@@ -252,7 +252,7 @@ public class TransferService {
 
         if (account.getAccountStatus() == AccountStatus.Blocked
                 || account.getAccountStatus() == AccountStatus.Cancelled) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Origin account " + originAccount + " is " + account.getAccountStatus()
                     + ". Transfers are not allowed from blocked or cancelled accounts.");
         }
@@ -266,13 +266,13 @@ public class TransferService {
 
         if (account.getAccountStatus() == AccountStatus.Blocked
                 || account.getAccountStatus() == AccountStatus.Cancelled) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Origin account " + originAccount + " is " + account.getAccountStatus()
                     + ". Transfers are not allowed.");
         }
 
         if (account.getCurrentBalance().compareTo(amount) < 0) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Insufficient funds in origin account " + originAccount
                     + ". Available: " + account.getCurrentBalance()
                     + ", Required: " + amount + ".");

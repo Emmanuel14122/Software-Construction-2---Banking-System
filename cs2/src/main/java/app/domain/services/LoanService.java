@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import app.domain.exception.BussinesException;
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.BusinessException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.BankAccount;
 import app.domain.models.OperationsLog;
 import app.domain.models.Loan;
@@ -52,10 +52,10 @@ public class LoanService {
 
         // 2. Validar monto y plazo
         if (requestedAmount == null || requestedAmount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BussinesException("Requested amount must be greater than zero.");
+            throw new BusinessException("Requested amount must be greater than zero.");
         }
         if (termMonths == null || termMonths <= 0) {
-            throw new BussinesException("Term in months must be greater than zero.");
+            throw new BusinessException("Term in months must be greater than zero.");
         }
 
         // 3. Construir la solicitud
@@ -89,14 +89,14 @@ public class LoanService {
 
         // Validar transición de estado
         if (loan.getLoanStatus() != LoanStatus.UnderReview) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Loan " + loanId + " cannot be approved. Current status: "
                     + loan.getLoanStatus() + ". Only loans in 'UnderReview' can be approved.");
         }
 
         // Validar monto aprobado
         if (approvedAmount == null || approvedAmount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BussinesException("Approved amount must be greater than zero.");
+            throw new BusinessException("Approved amount must be greater than zero.");
         }
 
         LoanStatus previousStatus = loan.getLoanStatus();
@@ -125,7 +125,7 @@ public class LoanService {
         Loan loan = getLoanById(loanId);
 
         if (loan.getLoanStatus() != LoanStatus.UnderReview) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Loan " + loanId + " cannot be rejected. Current status: "
                     + loan.getLoanStatus() + ". Only loans in 'UnderReview' can be rejected.");
         }
@@ -152,7 +152,7 @@ public class LoanService {
 
         // 1. Validar estado
         if (loan.getLoanStatus() != LoanStatus.Approved) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Loan " + loanId + " cannot be disbursed. Current status: "
                     + loan.getLoanStatus() + ". Only 'Approved' loans can be disbursed.");
         }
@@ -160,14 +160,14 @@ public class LoanService {
         // 2. Validar que la cuenta destino esté definida
         if (loan.getDestinationAccountDisbursement() == null
                 || loan.getDestinationAccountDisbursement().isBlank()) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Loan " + loanId + " does not have a destination account for disbursement.");
         }
 
         // 3. Validar que el monto aprobado sea mayor a cero
         if (loan.getApprovedAmount() == null
                 || loan.getApprovedAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Approved amount for loan " + loanId + " must be greater than zero.");
         }
 
@@ -178,7 +178,7 @@ public class LoanService {
                 "Destination account " + loan.getDestinationAccountDisbursement() + " not found."));
 
         if (!destinationAccount.getAccountHolderId().equals(loan.getClientRequestorId())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Destination account " + loan.getDestinationAccountDisbursement()
                     + " does not belong to the loan applicant " + loan.getClientRequestorId() + ".");
         }

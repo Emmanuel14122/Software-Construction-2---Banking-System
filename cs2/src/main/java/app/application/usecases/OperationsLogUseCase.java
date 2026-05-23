@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
  
 @Service
-public class OperationsLogUseCase implements app.domain.ports.in.OperationsLogUseCase {
+public class OperationsLogUseCase implements app.domain.ports.OperationsLogPort {
  
     @Autowired
     private SaveOperationsLog saveOperationsLog;

@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
  
 @Service
-public class BankAccountUseCase implements app.domain.ports.in.BankAccountUseCase {
+public class BankAccountUseCase implements app.domain.ports.BankAccountPort {
  
     @Autowired
     private SaveBankAccount saveBankAccount;

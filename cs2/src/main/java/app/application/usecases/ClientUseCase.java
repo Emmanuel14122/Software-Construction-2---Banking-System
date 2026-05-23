@@ -21,7 +21,7 @@ import app.domain.services.client.ExistsClientByEmail;
 import java.util.List;
  
 @Service
-public class ClientUseCase implements app.domain.ports.in.ClientUseCase {
+public class ClientUseCase implements app.domain.ports.ClientPort {
  
     @Autowired
     private SaveNaturalPersonClient saveNaturalPersonClient;

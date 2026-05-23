@@ -14,7 +14,7 @@ import app.domain.services.loan.ExistsLoan;
 import java.util.List;
  
 @Service
-public class LoanUseCase implements app.domain.ports.in.LoanUseCase {
+public class LoanUseCase implements app.domain.ports.LoanPort {
  
     @Autowired
     private SaveLoan saveLoan;

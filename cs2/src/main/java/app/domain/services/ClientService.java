@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
-import app.domain.exception.BussinesException;
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.BusinessException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.CompanyClient;
 import app.domain.models.NaturalPersonClient;
 import app.domain.models.enums.ClientStatus;
@@ -25,11 +25,11 @@ public class ClientService {
      */
     public void registerNaturalPerson(NaturalPersonClient client) {
         if (clientPort.existsNaturalPersonByDocument(client.getIdentification())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "A natural person with identification " + client.getIdentification() + " already exists.");
         }
         if (clientPort.existsByEmail(client.getEmail())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "The email " + client.getEmail() + " is already registered in the system.");
         }
         validateAdultAge(client.getBirthDate());
@@ -71,11 +71,11 @@ public class ClientService {
      */
     public void registerCompany(CompanyClient company) {
         if (clientPort.existsCompanyByNit(company.getNit())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "A company with NIT " + company.getNit() + " already exists.");
         }
         if (clientPort.existsByEmail(company.getEmail())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "The email " + company.getEmail() + " is already registered in the system.");
         }
 
@@ -87,7 +87,7 @@ public class ClientService {
         }
 
         if (legalRepresentative.getClientStatus() != ClientStatus.Active) {
-        throw new BussinesException("The legal representative must be an active client.");
+        throw new BusinessException("The legal representative must be an active client.");
         }
 
         company.setClientStatus(ClientStatus.Active);
@@ -131,7 +131,7 @@ public class ClientService {
         if (naturalOpt.isPresent()) {
             ClientStatus status = naturalOpt.get().getClientStatus();
             if (status == ClientStatus.Inactive || status == ClientStatus.Blocked) {
-                throw new BussinesException(
+                throw new BusinessException(
                     "Cannot operate: the client with identification " + identification
                         + " is " + status + ".");
             }
@@ -143,7 +143,7 @@ public class ClientService {
         if (companyOpt.isPresent()) {
             ClientStatus status = companyOpt.get().getClientStatus();
             if (status == ClientStatus.Inactive || status == ClientStatus.Blocked) {
-                throw new BussinesException(
+                throw new BusinessException(
                     "Cannot operate: the company with NIT " + identification
                         + " is " + status + ".");
             }
@@ -160,11 +160,11 @@ public class ClientService {
      */
     private void validateAdultAge(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new BussinesException("Birth date is required.");
+            throw new BusinessException("Birth date is required.");
         }
         int age = Period.between(birthDate, LocalDate.now()).getYears();
         if (age < 18) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "The client must be at least 18 years old. Calculated age: " + age + " years.");
         }
     }

@@ -1,8 +1,9 @@
 package app.application.adapters.persistence.sql.entities;
 
-import app.domain.models.NaturalPersonClient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,9 +14,14 @@ import lombok.Setter;
 @Setter
 public class CompanyClientEntity extends ClientEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "nit", unique = true)
     private String nit;
+
+    @Column(name = "company_name")
     private String companyName;
-    private NaturalPersonClient legalRepresentative;
+
+    @ManyToOne
+    @JoinColumn(name = "legal_representative")
+    private NaturalPersonClientEntity legalRepresentative;
 
 }

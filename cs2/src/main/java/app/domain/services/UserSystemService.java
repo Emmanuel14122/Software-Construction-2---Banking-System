@@ -2,8 +2,8 @@ package app.domain.services;
 
 import java.util.List;
 
-import app.domain.exception.BussinesException;
-import app.domain.exception.NotFoundException;
+import app.domain.Exceptions.BusinessException;
+import app.domain.Exceptions.NotFoundException;
 import app.domain.models.UserSystem;
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
@@ -21,15 +21,15 @@ public class UserSystemService {
     //Registra un nuevo usuario en el sistema.
     public void registerUser(UserSystem user) {
         if (userSystemPort.existsByDocument(user.getIdentification())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "A user with identification " + user.getIdentification() + " already exists.");
         }
         if (userSystemPort.existsByUsername(user.getUsername())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Username '" + user.getUsername() + "' is already taken.");
         }
         if (userSystemPort.existsByEmail(user.getEmail())) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "Email " + user.getEmail() + " is already registered.");
         }
 
@@ -104,7 +104,7 @@ public class UserSystemService {
                 "User with ID " + userId + " not found."));
 
         if (user.getUserStatus() != UserStatus.Active) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "User " + userId + " is not active. Current status: " + user.getUserStatus() + ".");
         }
     }
@@ -114,7 +114,7 @@ public class UserSystemService {
         UserSystem user = getUserById(userId);
 
         if (user.getSystemRole() != requiredRole) {
-            throw new BussinesException(
+            throw new BusinessException(
                 "User " + userId + " does not have the required role '"
                     + requiredRole + "'. Current role: " + user.getSystemRole() + ".");
         }
