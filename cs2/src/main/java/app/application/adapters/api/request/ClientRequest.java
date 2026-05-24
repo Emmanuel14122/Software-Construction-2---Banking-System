@@ -12,7 +12,8 @@ import app.domain.models.enums.ClientStatus;
 @Setter
 @NoArgsConstructor
 public class ClientRequest {
- 
+    
+    private Long id;
     @NotBlank(message= "Address is required")
     private String address;
     @NotBlank(message= "Phone number is required")

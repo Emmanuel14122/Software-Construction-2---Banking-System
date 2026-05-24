@@ -23,25 +23,25 @@ public class LoanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loanId;
 
-    @Column(name = "loan_type")
+    @Column(name = "loan_type", nullable = false)
     private String loanType;
 
-    @Column(name = "client_requestor_id")
+    @Column(name = "client_requestor_id", nullable = false)
     private String clientRequestorId;
 
-    @Column(name = "requested_amount")
+    @Column(name = "requested_amount", nullable = false)
     private BigDecimal requestedAmount;
 
-    @Column(name = "approved_amount")
+    @Column(name = "approved_amount", nullable = false)
     private BigDecimal approvedAmount;
 
-    @Column(name = "interest_rate")
+    @Column(name = "interest_rate", nullable = false)
     private BigDecimal interestRate;
 
-    @Column(name = "term_months")
+    @Column(name = "term_months", nullable = false)
     private int termMonths;
 
-    @Column(name = "loan_status")
+    @Column(name = "loan_status", nullable = false)
     private String loanStatus;
 
     @Column(name = "approval_date")
@@ -50,9 +50,9 @@ public class LoanEntity {
     @Column(name = "disbursement_date")
     private LocalDate disbursementDate;
 
-    @Column(name = "destination_account_disbursement")
+    @Column(name = "destination_account_disbursement", nullable = false)
     private String destinationAccountDisbursement;
 
-    @Column(name = "approver_analyst_id")
+    @Column(name = "approver_analyst_id", nullable = false)
     private Long approverAnalystId;
 }

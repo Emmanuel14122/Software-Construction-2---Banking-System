@@ -4,9 +4,6 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,13 +15,13 @@ import lombok.Setter;
 
 public class NaturalPersonClientEntity extends ClientEntity {
     
-    @Column(name = "identification", unique = true)
+    @Column(name = "identification", unique = true, nullable = false)
     private String identification;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
     
 }

@@ -14,14 +14,14 @@ import lombok.Setter;
 @Setter
 public class CompanyClientEntity extends ClientEntity {
 
-    @Column(name = "nit", unique = true)
+    @Column(name = "nit", unique = true, nullable = false)
     private String nit;
 
-    @Column(name = "company_name")
+    @Column(name = "company_name", nullable = false)
     private String companyName;
 
     @ManyToOne
-    @JoinColumn(name = "legal_representative")
+    @JoinColumn(name = "legal_representative", nullable = false)
     private NaturalPersonClientEntity legalRepresentative;
 
 }

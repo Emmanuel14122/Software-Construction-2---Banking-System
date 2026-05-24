@@ -22,13 +22,13 @@ public class UserSystemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(name = "client_type")
+    @Column(name = "client_type", nullable = false)
     private String clientType;
 
     @Column(name = "related_client_id")
     private String relatedClientId;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @Column(name = "identification", unique = true, nullable = false)
@@ -46,10 +46,10 @@ public class UserSystemEntity {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "system_role")
+    @Column(name = "system_role", nullable = false)
     private String systemRole;
 
-    @Column(name = "user_status")
+    @Column(name = "user_status", nullable = false)
     private String userStatus;
 
     @Column(name = "username", unique = true, nullable = false)

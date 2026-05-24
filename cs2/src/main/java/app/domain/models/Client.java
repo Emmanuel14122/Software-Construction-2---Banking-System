@@ -11,6 +11,7 @@ import app.domain.models.enums.ClientStatus;
 
 public abstract class Client{
 
+    private Long id;
     private String address;
     private String phoneNumber;
     private String email;

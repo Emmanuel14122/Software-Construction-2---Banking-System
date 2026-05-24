@@ -23,28 +23,28 @@ public class TransferEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transferId;
 
-    @Column(name = "origin_account")
+    @Column(name = "origin_account", nullable = false)
     private String originAccount;
 
-    @Column(name = "destination_account")
+    @Column(name = "destination_account", nullable = false)
     private String destinationAccount;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
 
     @Column(name = "approval_date")
     private LocalDateTime approvalDate;
 
-    @Column(name = "transfer_status")
+    @Column(name = "transfer_status", nullable = false)
     private String transferStatus;
 
-    @Column(name = "creator_user_id")
+    @Column(name = "creator_user_id", nullable = false)
     private Long creatorUserId;
 
-    @Column(name = "approver_user_id")
+    @Column(name = "approver_user_id", nullable = false)
     private Long approverUserId;
     
     @Column(name = "expiration_check_at")
