@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import app.domain.Exceptions.BusinessException;
 import app.domain.Exceptions.NotFoundException;
 import app.domain.models.CompanyClient;
@@ -11,7 +13,7 @@ import app.domain.models.NaturalPersonClient;
 import app.domain.models.enums.ClientStatus;
 import app.domain.ports.ClientPort;
 
-
+@Service
 public class ClientService {
 
     private final ClientPort clientPort;

@@ -2,6 +2,8 @@ package app.domain.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import app.domain.Exceptions.BusinessException;
 import app.domain.Exceptions.NotFoundException;
 import app.domain.models.UserSystem;
@@ -9,7 +11,7 @@ import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
 import app.domain.ports.UserSystemPort;
 
-
+@Service
 public class UserSystemService {
 
     private final UserSystemPort userSystemPort;

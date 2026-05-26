@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import app.domain.Exceptions.BusinessException;
 import app.domain.Exceptions.NotFoundException;
 import app.domain.models.BankAccount;
@@ -17,7 +19,7 @@ import app.domain.ports.BankAccountPort;
 import app.domain.ports.OperationsLogPort;
 import app.domain.ports.TransferPort;
 
-
+@Service
 public class TransferService {
 
 

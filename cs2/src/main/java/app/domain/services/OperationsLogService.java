@@ -3,13 +3,14 @@ package app.domain.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import app.domain.Exceptions.NotFoundException;
 import app.domain.models.OperationsLog;
 import app.domain.ports.OperationsLogPort;
 
-/**
- * Servicio de dominio para la consulta de la Bitácora de Operaciones.
- */
+
+@Service
 public class OperationsLogService {
 
     private final OperationsLogPort operationsLogPort;
