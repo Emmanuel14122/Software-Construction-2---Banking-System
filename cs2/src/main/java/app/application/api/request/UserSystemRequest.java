@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import app.domain.models.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
+import app.domain.models.enums.ClientType;
 
 
 import app.domain.models.enums.UserStatus;
@@ -25,4 +26,5 @@ public class UserSystemRequest {
     private UserStatus userStatus;
     private String username;
     private String password;
+    private ClientType clientType;
 }

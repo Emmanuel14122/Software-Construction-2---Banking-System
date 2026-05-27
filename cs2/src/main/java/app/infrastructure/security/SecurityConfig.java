@@ -32,22 +32,25 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-            // Login público
             .requestMatchers("/auth/**").permitAll()
+            .requestMatchers("/system-users/internal_analyst/users").permitAll() // ← agrega esta
+            // Login público
             //windowEmployee
-            .requestMatchers("/window_employe/**").hasRole("WindowEmployee")
+            .requestMatchers("/system-users/window_employe/**").hasRole("WindowEmployee")
             //salesEmployee
-            .requestMatchers("/sales_employe/**").hasRole("SalesEmployee")
+            .requestMatchers("/system-users/sales_employe/**").hasRole("SalesEmployee")
             //personCustomerUser
-            .requestMatchers("/person_customer_user/**").hasRole("PersonCustomerUser")
+            .requestMatchers("/system-users/person_customer_user/**").hasRole("PersonCustomerUser")
             //corporateCustomerUser
-            .requestMatchers("/corporate_customer_user/**").hasRole("CorporateCustomerUser")
+            .requestMatchers("/system-users/corporate_customer_user/**").hasRole("CorporateCustomerUser")
             //corporateEmployee
-            .requestMatchers("/corporate_employe/**").hasRole("CorporateEmployee")
+            .requestMatchers("/system-users/corporate_employe/**").hasRole("CorporateEmployee")
             //corporateSupervisor
-            .requestMatchers("/corporate_supervisor/**").hasRole("CorporateSupervisor")
+            .requestMatchers("/system-users/corporate_supervisor/**").hasRole("CorporateSupervisor")
             //internalAnalyst
-            .requestMatchers("/internal_analyst/**").hasRole("InternalAnalyst")
+            .requestMatchers("/system-users/internal_analyst/**").hasRole("InternalAnalyst")
+            //permite ver los endpoints de Swagger sin autenticación
+            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .anyRequest().authenticated()
         )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

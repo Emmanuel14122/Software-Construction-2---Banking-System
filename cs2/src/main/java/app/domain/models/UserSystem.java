@@ -7,6 +7,7 @@ import app.domain.models.enums.UserStatus;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import app.domain.models.enums.ClientType;
 
 @Getter
 @Setter
@@ -26,5 +27,6 @@ public class UserSystem {
     private UserStatus userStatus;
     private String username;
     private String password;
+    private ClientType clientType;
 
 }

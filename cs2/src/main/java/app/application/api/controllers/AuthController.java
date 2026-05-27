@@ -46,6 +46,6 @@ public class AuthController {
                 user.getSystemRole().name()
         );
 
-        return ResponseEntity.ok(new LoginResponse(token, user.getIdentification(), user.getSystemRole().name()));
+        return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getSystemRole().name()));
     }
 }

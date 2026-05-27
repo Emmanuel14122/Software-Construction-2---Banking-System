@@ -125,6 +125,7 @@ public class UserSystemPersistenceAdapter implements UserSystemPort {
         entity.setPassword(user.getPassword());
         entity.setSystemRole(user.getSystemRole() != null ? user.getSystemRole().name() : null);
         entity.setUserStatus(user.getUserStatus() != null ? user.getUserStatus().name() : null);
+        entity.setClientType(user.getClientType() != null ? user.getClientType().name() : null);
         entity.setRelatedClientId(user.getRelatedClientId() != null
                 ? user.getRelatedClientId().toString()
                 : null);

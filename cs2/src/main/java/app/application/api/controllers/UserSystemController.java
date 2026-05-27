@@ -216,6 +216,7 @@ public class UserSystemController {
         user.setUserStatus(request.getUserStatus());
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
+        user.setClientType(request.getClientType());
         return user;
     }
 
