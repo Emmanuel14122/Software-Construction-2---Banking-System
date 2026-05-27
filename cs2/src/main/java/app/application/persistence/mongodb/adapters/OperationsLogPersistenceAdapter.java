@@ -8,7 +8,9 @@ import app.application.persistence.mongodb.documents.OperationsLogDocument;
 import app.application.persistence.mongodb.repositories.OperationsLogMongoRepository;
 import app.domain.models.OperationsLog;
 import app.domain.ports.OperationsLogPort;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OperationsLogPersistenceAdapter implements OperationsLogPort{
     
     private final OperationsLogMongoRepository repository;
