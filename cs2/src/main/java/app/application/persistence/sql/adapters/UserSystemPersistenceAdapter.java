@@ -87,9 +87,11 @@ public class UserSystemPersistenceAdapter implements UserSystemPort {
         return userSystemRepository.existsByEmail(email);
     }
 
+    // ✅ FIX: ahora setea el userId generado por la BD de vuelta al objeto
     @Override
     public void save(UserSystem user) {
-        userSystemRepository.save(toEntity(user));
+        UserSystemEntity saved = userSystemRepository.save(toEntity(user));
+        user.setUserId(saved.getUserId());
     }
 
     @Override

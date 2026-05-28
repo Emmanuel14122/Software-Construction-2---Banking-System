@@ -99,10 +99,11 @@ public class TransferPersistenceAdapter implements TransferPort{
         return transferRepository.existsById(transferId);
     }
 
-    @Override
+   @Override
     public void save(Transfer transfer) {
-        transferRepository.save(toEntity(transfer));
-    }
+        TransferEntity saved = transferRepository.save(toEntity(transfer));
+        transfer.setTransferId(saved.getTransferId());
+}
 
     @Override
     public void update(Transfer transfer) {
