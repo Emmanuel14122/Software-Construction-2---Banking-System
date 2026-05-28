@@ -33,8 +33,6 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/system-users/internal_analyst/users").permitAll() // ← agrega esta
-            // Login público
             //windowEmployee
             .requestMatchers("/system-users/window_employe/**").hasRole("WindowEmployee")
             //salesEmployee

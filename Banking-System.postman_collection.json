@@ -1,0 +1,1385 @@
+{
+  "info": {
+    "name": "Banking System API",
+    "description": "Colección completa de endpoints para el Sistema Bancario - Spring Boot\n\nAPI REST para la gestión de clientes, cuentas, préstamos y transferencias en un sistema bancario con autenticación JWT.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"analyst_user\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Autentica un usuario y obtiene un token JWT para acceder a los endpoints protegidos."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const res = pm.response.json();",
+                  "    pm.collectionVariables.set(\"token\", res.token);",
+                  "    pm.collectionVariables.set(\"username\", res.username);",
+                  "    pm.collectionVariables.set(\"role\", res.role);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "👥 System Users Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users"
+              ]
+            },
+            "description": "Obtiene la lista de todos los usuarios del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by Identification",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users/{{userId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "description": "Obtiene los datos de un usuario específico por su número de identificación."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Role",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users/by-role?role=InternalAnalyst",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users",
+                "by-role"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "InternalAnalyst"
+                }
+              ]
+            },
+            "description": "Obtiene usuarios filtrados por rol. Roles disponibles: PersonCustomerUser, CorporateCustomerUser, WindowEmployee, SalesEmployee, CorporateEmployee, CorporateSupervisor, InternalAnalyst"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identification\": \"1234567890\",\n  \"username\": \"new_analyst\",\n  \"password\": \"SecurePass123!\",\n  \"systemRole\": \"InternalAnalyst\",\n  \"userStatus\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users"
+              ]
+            },
+            "description": "Crea un nuevo usuario en el sistema (empleados internos)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identification\": \"1234567890\",\n  \"username\": \"updated_analyst\",\n  \"password\": \"NewSecurePass123!\",\n  \"systemRole\": \"InternalAnalyst\",\n  \"userStatus\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users/1234567890",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users",
+                "1234567890"
+              ]
+            },
+            "description": "Actualiza los datos de un usuario existente."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/system-users/internal_analyst/users/1234567890",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "system-users",
+                "internal_analyst",
+                "users",
+                "1234567890"
+              ]
+            },
+            "description": "Elimina un usuario del sistema."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👨‍💼 Clients Management",
+      "item": [
+        {
+          "name": "Natural Persons",
+          "item": [
+            {
+              "name": "Get All Natural Persons",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/clients/internal_analyst/clients/natural-persons",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "internal_analyst",
+                    "clients",
+                    "natural-persons"
+                  ]
+                },
+                "description": "Obtiene la lista de todas las personas naturales registradas."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Natural Person by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/clients/internal_analyst/clients/natural-persons/1098765432",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "internal_analyst",
+                    "clients",
+                    "natural-persons",
+                    "1098765432"
+                  ]
+                },
+                "description": "Obtiene los datos de una persona natural específica por su cédula/DNI."
+              },
+              "response": []
+            },
+            {
+              "name": "Register Natural Person",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identification\": \"1098765432\",\n  \"fullName\": \"Juan Carlos López Rodríguez\",\n  \"birthDate\": \"15-03-1985\",\n  \"email\": \"juan.lopez@example.com\",\n  \"phone\": \"+57 3001234567\",\n  \"address\": \"Calle 10 #20-30, Apto 502, Bogotá\",\n  \"clientStatus\": \"Active\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/clients/sales_employe/clients/natural-persons",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "sales_employe",
+                    "clients",
+                    "natural-persons"
+                  ]
+                },
+                "description": "Registra una nueva persona natural como cliente del banco."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Natural Person",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identification\": \"1098765432\",\n  \"fullName\": \"Juan Carlos López Rodríguez\",\n  \"birthDate\": \"15-03-1985\",\n  \"email\": \"juan.lopez.updated@example.com\",\n  \"phone\": \"+57 3009876543\",\n  \"address\": \"Calle 15 #40-50, Apto 802, Bogotá\",\n  \"clientStatus\": \"Active\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/clients/sales_employe/clients/natural-persons/1098765432",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "sales_employe",
+                    "clients",
+                    "natural-persons",
+                    "1098765432"
+                  ]
+                },
+                "description": "Actualiza los datos de una persona natural existente."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Companies",
+          "item": [
+            {
+              "name": "Get All Companies",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/clients/internal_analyst/clients/companies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "internal_analyst",
+                    "clients",
+                    "companies"
+                  ]
+                },
+                "description": "Obtiene la lista de todas las empresas registradas."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Company by NIT",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/clients/internal_analyst/clients/companies/900123456-7",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "internal_analyst",
+                    "clients",
+                    "companies",
+                    "900123456-7"
+                  ]
+                },
+                "description": "Obtiene los datos de una empresa específica por su NIT."
+              },
+              "response": []
+            },
+            {
+              "name": "Register Company",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nit\": \"900123456-7\",\n  \"companyName\": \"Tecnología Innovadora S.A.S.\",\n  \"legalRepresentative\": \"Carlos Antonio García\",\n  \"email\": \"contacto@tecno-innovadora.com\",\n  \"phone\": \"+57 1 5551234\",\n  \"address\": \"Cra 7 #72-21, Piso 15, Bogotá\",\n  \"industry\": \"Tecnología y Software\",\n  \"clientStatus\": \"Active\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/clients/sales_employe/clients/companies",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "sales_employe",
+                    "clients",
+                    "companies"
+                  ]
+                },
+                "description": "Registra una nueva empresa como cliente del banco."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Company",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nit\": \"900123456-7\",\n  \"companyName\": \"Tecnología Innovadora S.A.S.\",\n  \"legalRepresentative\": \"Carlos Antonio García Pérez\",\n  \"email\": \"contacto.updated@tecno-innovadora.com\",\n  \"phone\": \"+57 1 5559876\",\n  \"address\": \"Cra 10 #80-30, Piso 20, Bogotá\",\n  \"industry\": \"Tecnología y Software\",\n  \"clientStatus\": \"Active\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/clients/sales_employe/clients/companies/900123456-7",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "clients",
+                    "sales_employe",
+                    "clients",
+                    "companies",
+                    "900123456-7"
+                  ]
+                },
+                "description": "Actualiza los datos de una empresa existente."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "💳 Bank Accounts",
+      "item": [
+        {
+          "name": "Get All Accounts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/internal_analyst/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "internal_analyst",
+                "accounts"
+              ]
+            },
+            "description": "Obtiene la lista de todas las cuentas del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Account by Number",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/internal_analyst/accounts/4524182024001234",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "internal_analyst",
+                "accounts",
+                "4524182024001234"
+              ]
+            },
+            "description": "Obtiene la información de una cuenta bancaria específica."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Accounts by Client",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/internal_analyst/clients/1098765432/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "internal_analyst",
+                "clients",
+                "1098765432",
+                "accounts"
+              ]
+            },
+            "description": "Obtiene todas las cuentas de un cliente específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Open Account (Window Employee)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"4524182024001234\",\n  \"accountType\": \"Saving\",\n  \"accountHolderId\": \"1098765432\",\n  \"currentBalance\": 50000.00,\n  \"currency\": \"COP\",\n  \"accountStatus\": \"Active\",\n  \"openingDate\": \"2024-05-27\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/window_employe/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "window_employe",
+                "accounts"
+              ]
+            },
+            "description": "Abre una nueva cuenta bancaria. Requiere rol de empleado de ventanilla."
+          },
+          "response": []
+        },
+        {
+          "name": "Open Account (Sales Employee)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"4524182024005678\",\n  \"accountType\": \"Current\",\n  \"accountHolderId\": \"900123456-7\",\n  \"currentBalance\": 100000.00,\n  \"currency\": \"COP\",\n  \"accountStatus\": \"Active\",\n  \"openingDate\": \"2024-05-27\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/sales_employe/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "sales_employe",
+                "accounts"
+              ]
+            },
+            "description": "Abre una cuenta bancaria en nombre de un cliente. Requiere rol de empleado comercial."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Accounts (Personal Customer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/person_customer_user/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "person_customer_user",
+                "accounts"
+              ]
+            },
+            "description": "Obtiene todas las cuentas propias del cliente persona natural."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Company Accounts (Corporate Customer)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bank-accounts/corporate_customer_user/accounts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bank-accounts",
+                "corporate_customer_user",
+                "accounts"
+              ]
+            },
+            "description": "Obtiene todas las cuentas de la empresa del cliente corporativo."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💰 Loans",
+      "item": [
+        {
+          "name": "Get All Loans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans"
+              ]
+            },
+            "description": "Obtiene la lista de todos los préstamos del sistema."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Loans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans/pending",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans",
+                "pending"
+              ]
+            },
+            "description": "Obtiene todos los préstamos pendientes de revisión (UnderReview)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Loan by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans",
+                "1"
+              ]
+            },
+            "description": "Obtiene los detalles de un préstamo específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Client Loans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/clients/1098765432/loans",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "clients",
+                "1098765432",
+                "loans"
+              ]
+            },
+            "description": "Obtiene todos los préstamos de un cliente específico."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Loan Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"loanType\": \"homeLoan\",\n  \"clientRequestorId\": \"1098765432\",\n  \"requestedAmount\": 250000000.00,\n  \"termMonths\": 180,\n  \"destinationAccountDisbursement\": \"4524182024001234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/loans/sales_employe/loans",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "sales_employe",
+                "loans"
+              ]
+            },
+            "description": "Crea una nueva solicitud de préstamo en nombre de un cliente."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Loan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approvedAmount\": 200000000.00,\n  \"interestRate\": 9.5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans/1/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans",
+                "1",
+                "approve"
+              ]
+            },
+            "description": "Aprueba un préstamo pendiente de revisión. Se especifica el monto aprobado y tasa de interés."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Loan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans/1/reject",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans",
+                "1",
+                "reject"
+              ]
+            },
+            "description": "Rechaza un préstamo pendiente de revisión."
+          },
+          "response": []
+        },
+        {
+          "name": "Disburse Loan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/loans/internal_analyst/loans/1/disburse",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "loans",
+                "internal_analyst",
+                "loans",
+                "1",
+                "disburse"
+              ]
+            },
+            "description": "Desembolsa un préstamo aprobado, transfiriendo el monto a la cuenta destino."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "💸 Transfers",
+      "item": [
+        {
+          "name": "Get All Transfers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/internal_analyst/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "internal_analyst",
+                "transfers"
+              ]
+            },
+            "description": "Obtiene la lista de todas las transferencias del sistema para auditoría."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transfer by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/internal_analyst/transfers/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "internal_analyst",
+                "transfers",
+                "1"
+              ]
+            },
+            "description": "Obtiene los detalles de una transferencia específica."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Account Transfers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/internal_analyst/accounts/4524182024001234/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "internal_analyst",
+                "accounts",
+                "4524182024001234",
+                "transfers"
+              ]
+            },
+            "description": "Obtiene todas las transferencias de una cuenta (como origen o destino)."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Personal Transfer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"originAccount\": \"4524182024001234\",\n  \"destinationAccount\": \"4524182024005678\",\n  \"amount\": 50000.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transfers/person_customer_user/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "person_customer_user",
+                "transfers"
+              ]
+            },
+            "description": "Crea y ejecuta inmediatamente una transferencia personal. No requiere aprobación."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Account Transfers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/person_customer_user/accounts/4524182024001234/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "person_customer_user",
+                "accounts",
+                "4524182024001234",
+                "transfers"
+              ]
+            },
+            "description": "Obtiene el historial de transferencias de una cuenta propia."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Corporate Transfer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"originAccount\": \"4524182024005678\",\n  \"destinationAccount\": \"4524182024009999\",\n  \"amount\": 500000.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/transfers/corporate_employe/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "corporate_employe",
+                "transfers"
+              ]
+            },
+            "description": "Crea una transferencia empresarial que requiere aprobación del supervisor."
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Created Transfers (Corporate Employee)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/corporate_employe/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "corporate_employe",
+                "transfers"
+              ]
+            },
+            "description": "Obtiene todas las transferencias creadas por el empleado corporativo."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pending Transfers (Corporate Supervisor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/corporate_supervisor/transfers/pending",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "corporate_supervisor",
+                "transfers",
+                "pending"
+              ]
+            },
+            "description": "Obtiene todas las transferencias de la empresa en espera de aprobación."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Company Transfers (Corporate Supervisor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/transfers/corporate_supervisor/transfers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "transfers",
+                "corporate_supervisor",
+                "transfers"
+              ]
+            },
+            "description": "Obtiene todas las transferencias de la empresa."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📋 Operations Log & Audit",
+      "item": [
+        {
+          "name": "Get All Operations Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log"
+              ]
+            },
+            "description": "Obtiene todos los registros de la bitácora de operaciones."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Log by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log/507f1f77bcf86cd799439011",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log",
+                "507f1f77bcf86cd799439011"
+              ]
+            },
+            "description": "Obtiene un registro específico de la bitácora por su ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Logs by Product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log/by-product/4524182024001234",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log",
+                "by-product",
+                "4524182024001234"
+              ]
+            },
+            "description": "Filtra registros por ID del producto afectado (cuenta, préstamo, transferencia)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Logs by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log/by-user/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log",
+                "by-user",
+                "1"
+              ]
+            },
+            "description": "Filtra registros por usuario que ejecutó la acción (auditoría de personal)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Logs by Operation Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log/by-type?operationType=LOAN_APPROVED",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log",
+                "by-type"
+              ],
+              "query": [
+                {
+                  "key": "operationType",
+                  "value": "LOAN_APPROVED",
+                  "description": "Tipos: LOAN_APPROVED, LOAN_DISBURSED, LOAN_REJECTED, TRANSFER_EXECUTED, TRANSFER_EXPIRED, ACCOUNT_OPENED"
+                }
+              ]
+            },
+            "description": "Filtra registros por tipo de operación."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Logs by Date Range",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/operations-log/internal_analyst/operations-log/by-date?from=2024-01-01T00:00:00&to=2024-12-31T23:59:59",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "operations-log",
+                "internal_analyst",
+                "operations-log",
+                "by-date"
+              ],
+              "query": [
+                {
+                  "key": "from",
+                  "value": "2024-01-01T00:00:00"
+                },
+                {
+                  "key": "to",
+                  "value": "2024-12-31T23:59:59"
+                }
+              ]
+            },
+            "description": "Filtra registros dentro de un rango de fechas para auditorías por período."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8081",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "role",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "1098765432",
+      "type": "string"
+    }
+  ]
+}

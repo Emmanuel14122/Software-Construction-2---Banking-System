@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import app.application.persistence.sql.entities.UserSystemEntity;
 import app.application.persistence.sql.repositories.UserSystemRepository;
+import app.domain.models.Client;
 import app.domain.models.UserSystem;
+import app.domain.models.enums.ClientType;
 import app.domain.models.enums.UserRole;
 import app.domain.models.enums.UserStatus;
 import app.domain.ports.UserSystemPort;
@@ -127,7 +129,7 @@ public class UserSystemPersistenceAdapter implements UserSystemPort {
         entity.setUserStatus(user.getUserStatus() != null ? user.getUserStatus().name() : null);
         entity.setClientType(user.getClientType() != null ? user.getClientType().name() : null);
         entity.setRelatedClientId(user.getRelatedClientId() != null
-                ? user.getRelatedClientId().toString()
+                ? user.getRelatedClientId().getId().toString()
                 : null);
         return entity;
     }
@@ -148,6 +150,13 @@ public class UserSystemPersistenceAdapter implements UserSystemPort {
                 ? UserRole.valueOf(entity.getSystemRole()) : null);
         user.setUserStatus(entity.getUserStatus() != null
                 ? UserStatus.valueOf(entity.getUserStatus()) : null);
+        user.setClientType(entity.getClientType() != null
+                ? ClientType.valueOf(entity.getClientType()) : null);
+        if (entity.getRelatedClientId() != null) {
+            Client client = new Client() {};
+            client.setId(Long.valueOf(entity.getRelatedClientId()));
+            user.setRelatedClientId(client);
+        }
         return user;
     }
 }

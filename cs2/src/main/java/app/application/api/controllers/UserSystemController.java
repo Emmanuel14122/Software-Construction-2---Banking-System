@@ -27,22 +27,15 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/system-users")
 public class UserSystemController {
-        private final UserSystemService userSystemService;
+    private final UserSystemService userSystemService;
     private final PasswordEncoder passwordEncoder;
 
     public UserSystemController(UserSystemService userSystemService,
-                                 PasswordEncoder passwordEncoder) {
+                                PasswordEncoder passwordEncoder) {
         this.userSystemService = userSystemService;
         this.passwordEncoder = passwordEncoder;
     }
 
-
-    // ── ANALISTA INTERNO ──────────────────────────────────────────────────────────────
-
-    /**
-     * GET /internal_analyst/users
-     * Lista todos los usuarios del sistema.
-     */
     @GetMapping("/internal_analyst/users")
     public ResponseEntity<List<UserSystemResponse>> getAllUsers() {
         List<UserSystemResponse> response = userSystemService.getAllUsers()
@@ -52,20 +45,12 @@ public class UserSystemController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * GET /internal_analyst/users/{identification}
-     * Consulta un usuario por número de identificación.
-     */
     @GetMapping("/internal_analyst/users/{identification}")
     public ResponseEntity<UserSystemResponse> getUserByDocument(@PathVariable String identification) {
         UserSystem user = userSystemService.getUserByDocument(identification);
         return ResponseEntity.ok(toResponse(user));
     }
 
-    /**
-     * GET /internal_analyst/users/by-role?role=InternalAnalyst
-     * Lista usuarios filtrados por rol. Útil para auditoría y asignación de analistas.
-     */
     @GetMapping("/internal_analyst/users/by-role")
     public ResponseEntity<List<UserSystemResponse>> getUsersByRole(@RequestParam UserRole role) {
         List<UserSystemResponse> response = userSystemService.getUsersByRole(role)
@@ -75,24 +60,17 @@ public class UserSystemController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * POST /internal_analyst/users
-     * Crea un nuevo usuario en el sistema (empleados internos, etc.).
-     * La contraseña se cifra antes de persistir.
-     */
+    // ✅ FIX: recupera el usuario guardado para obtener el userId generado
     @PostMapping("/internal_analyst/users")
     public ResponseEntity<UserSystemResponse> createUser(
             @Valid @RequestBody UserSystemRequest request) {
         UserSystem user = toModel(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userSystemService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(user));
+        UserSystem saved = userSystemService.getUserByDocument(user.getIdentification());
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(saved));
     }
 
-    /**
-     * PUT /internal_analyst/users/{identification}
-     * Actualiza los datos de un usuario existente.
-     */
     @PutMapping("/internal_analyst/users/{identification}")
     public ResponseEntity<UserSystemResponse> updateUser(
             @PathVariable String identification,
@@ -100,13 +78,10 @@ public class UserSystemController {
         request.setIdentification(identification);
         UserSystem user = toModel(request);
         userSystemService.updateUser(user);
-        return ResponseEntity.ok(toResponse(user));
+        UserSystem saved = userSystemService.getUserByDocument(identification);
+        return ResponseEntity.ok(toResponse(saved));
     }
 
-    /**
-     * PUT /internal_analyst/users/{userId}/status?status=Inactive
-     * Cambia el estado de un usuario (Active, Inactive, Blocked).
-     */
     @PutMapping("/internal_analyst/users/{userId}/status")
     public ResponseEntity<Void> changeUserStatus(
             @PathVariable Long userId,
@@ -121,29 +96,19 @@ public class UserSystemController {
         return ResponseEntity.noContent().build();
     }
 
-
-    // ── SUPERVISOR DE EMPRESA ──────────────────────────────────────────────────────────────
-
-    /**
-     * POST /corporate_supervisor/users
-     * Crea un nuevo usuario operativo (CorporateEmployee) para la empresa.
-     */
+    // ✅ FIX: recupera el usuario guardado para obtener el userId generado
     @PostMapping("/corporate_supervisor/users")
     public ResponseEntity<UserSystemResponse> createCorporateEmployee(
             @Valid @RequestBody UserSystemRequest request,
             Authentication authentication) {
-
         request.setSystemRole(UserRole.CorporateEmployee);
         UserSystem user = toModel(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userSystemService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(user));
+        UserSystem saved = userSystemService.getUserByDocument(user.getIdentification());
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(saved));
     }
 
-    /**
-     * GET /corporate_supervisor/users
-     * Lista los usuarios operativos de la empresa.
-     */
     @GetMapping("/corporate_supervisor/users")
     public ResponseEntity<List<UserSystemResponse>> getCorporateEmployees(
             Authentication authentication) {
@@ -155,10 +120,6 @@ public class UserSystemController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * PUT /corporate_supervisor/users/{userId}/status?status=Inactive
-     * El Supervisor puede activar/desactivar usuarios operativos de su empresa.
-     */
     @PutMapping("/corporate_supervisor/users/{userId}/status")
     public ResponseEntity<Void> changeCorporateEmployeeStatus(
             @PathVariable Long userId,
@@ -167,36 +128,26 @@ public class UserSystemController {
         return ResponseEntity.noContent().build();
     }
 
-
-    // ── EMPLEADO COMERCIAL ──────────────────────────────────────────────────────────────
-
-
-    /**
-     * POST /sales_employe/users
-     * El Empleado Comercial registra un nuevo usuario cliente (PersonCustomerUser o CorporateCustomerUser).
-     */
+    // ✅ FIX: recupera el usuario guardado para obtener el userId generado
     @PostMapping("/sales_employe/users")
     public ResponseEntity<UserSystemResponse> registerClientUser(
             @Valid @RequestBody UserSystemRequest request) {
         UserSystem user = toModel(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userSystemService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(user));
+        UserSystem saved = userSystemService.getUserByDocument(user.getIdentification());
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(saved));
     }
 
-    // ── EMPLEADO DE VENTANILLA ──────────────────────────────────────────────────────────────
-
-    /**
-     * POST /window_employe/users
-     * El Empleado de Ventanilla registra el acceso digital de un nuevo cliente.
-     */
+    // ✅ FIX: recupera el usuario guardado para obtener el userId generado
     @PostMapping("/window_employe/users")
     public ResponseEntity<UserSystemResponse> registerClientUserAtWindow(
             @Valid @RequestBody UserSystemRequest request) {
         UserSystem user = toModel(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userSystemService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(user));
+        UserSystem saved = userSystemService.getUserByDocument(user.getIdentification());
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(saved));
     }
 
     // =========================================================================
